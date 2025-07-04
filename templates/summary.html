@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Summary for {{ month }}</h1>
+    <ul>
+        <li>Total Income: ₹{{ "%.2f"|format(income) }}</li>
+        <li>Total Expense: ₹{{ "%.2f"|format(expense) }}</li>
+        <li>Savings: ₹{{ "%.2f"|format(savings) }}</li>
+    </ul>
+
+    <canvas id="summaryChart" width="400" height="200"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('summaryChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Income', 'Expense', 'Savings'],
+                datasets: [{
+                    label: 'Amount (₹)',
+                    data: [{ income }, { expense }, { savings }],
+                    backgroundColor: ['#4caf50', '#f44336', '#2196f3']
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <br>
+    <a href="{{ url_for('index') }}">Back to Transactions</a>
+</body>
+</html>

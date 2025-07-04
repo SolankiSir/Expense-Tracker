@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>All Transactions</h1>
+
+    <a href="{{ url_for('add') }}">Add Transaction</a> |
+    <a href="{{ url_for('summary') }}">View Monthly Summary</a>
+
+    {% if budget_exceeded %}
+        <p style="color:red;">
+            Warning! You have exceeded your monthly budget of ₹{{ monthly_budget }}.<br>
+            Total expenses this month: ₹{{ "%.2f"|format(total_expense) }}
+        </p>
+    {% else %}
+        <p>Total expenses this month: ₹{{ "%.2f"|format(total_expense) }}</p>
+    {% endif %}
+
+    <table border="1" cellpadding="5" cellspacing="0" style="margin-top:10px;">
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        {% for txn in transactions %}
+        <tr>
+            <td>{{ txn.id }}</td>
+            <td>{{ txn.date }}</td>
+            <td>{{ txn.type }}</td>
+            <td>{{ txn.category }}</td>
+            <td>₹{{ "%.2f"|format(txn.amount) }}</td>
+            <td>{{ txn.description }}</td>
+            <td>
+                <a href="{{ url_for('edit', txn_id=txn.id) }}">Edit</a> |
+                <form method="post" action="{{ url_for('delete', txn_id=txn.id) }}" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
