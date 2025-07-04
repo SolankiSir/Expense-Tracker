@@ -5,7 +5,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Needed for flash messages
-
+app
 DATA_FOLDER = "data"
 CSV_FILE = os.path.join(DATA_FOLDER, "transactions.csv")
 MONTHLY_BUDGET =    5000
